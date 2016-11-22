@@ -45,6 +45,25 @@ class GameState extends Phaser.State {
                 this.startTile = item;
             }
         }.bind(this));
+
+        this.player = new Player(this.game, this.startTile, 10);
+        this.game.stage.addChild(this.player);
+
+        console.log(this.hexagonTileGroup.children[15]);
+
+        this.player.moveTile(this.hexagonTileGroup.children[39], 11);
+        // this.player.moveTile(this.hexagonTileGroup.children[21], 1);
+        // this.player.moveTile(this.hexagonTileGroup.children[22], 2);
+        // this.player.moveTile(this.hexagonTileGroup.children[23], 3);
+        // this.player.moveTile(this.hexagonTileGroup.children[24], 4);
+        // this.player.moveTile(this.hexagonTileGroup.children[25], 5);
+        // this.player.moveTile(this.hexagonTileGroup.children[26], 6);
+        // this.player.moveTile(this.hexagonTileGroup.children[30], 7);
+        // this.player.moveTile(this.hexagonTileGroup.children[31], 8);
+        // this.player.moveTile(this.hexagonTileGroup.children[32], 9);
+        // this.player.moveTile(this.hexagonTileGroup.children[33], 10);
+        // this.player.moveTile(this.hexagonTileGroup.children[34], 11);
+        // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	}
 
     createMap(game, map) {
