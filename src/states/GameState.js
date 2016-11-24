@@ -19,12 +19,12 @@ class GameState extends Phaser.State {
 
         this.game.hexagonWidth = 400;
         this.game.hexagonHeight = 346;
+        this.game.eventLocked = false;
     }
 
 	create() {
         // Create Objects
         // Add map
-
         this.mapGroup = new Phaser.Group(this.game, this.world);
         this.mapGroup.pivot.x = this.game.world.centerX;
         this.mapGroup.pivot.y = this.game.world.centerY;
@@ -43,6 +43,9 @@ class GameState extends Phaser.State {
         // Move Map to middle
         this.mapGroup.centerX = this.game.world.centerX;
         this.mapGroup.centerY = this.game.world.centerY;
+
+        // Create selected tile
+        this.activeTile = {};
 
         this.addRandomRoadsToTile(1,4);
 
@@ -81,12 +84,6 @@ class GameState extends Phaser.State {
 
 
 	}
-
-
-    rotate() {
-        console.log("HERE");
-        this.param.game.add.tween(this.param).to( { angle: this.param.angle + 60 }, 200, Phaser.Easing.Linear.None, true);
-    }
 
     // Debug
     printOutline(object) {
@@ -131,7 +128,17 @@ class GameState extends Phaser.State {
         tile.addChild(lineGroup);
         lineGroup.alignIn(tile, Phaser.CENTER, -tile.x, -tile.y);
 
-        this.game.input.onDown.add(this.rotate, {param: tile});
+        this.activeTile = tile;
+
+        this.game.input.onDown.add(function rotate() {
+            if (!this.game.eventLocked && Object.keys(this.activeTile).length > 0) {
+                this.game.eventLocked = true;
+                var tween = this.game.add.tween(this.activeTile).to( { angle: this.activeTile.angle + 60 }, 150, Phaser.Easing.Linear.None, true);
+                tween.onComplete.add(function(tile, tween) {
+                    this.game.eventLocked = false;
+                }, this);
+            }
+        }, this);
 
 
     }
