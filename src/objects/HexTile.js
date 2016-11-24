@@ -1,3 +1,5 @@
+import { getTileNameByPosition } from 'utils/Utils';
+
 class HexTile extends Phaser.Sprite {
 
     constructor(game, x, y, type, position) {
@@ -24,11 +26,20 @@ class HexTile extends Phaser.Sprite {
         // Set custom variables
         this.type = type;
         this.size = game.hexagonSize;
-        this.customPosition = position;
+        this.row = position.row;
+        this.col = position.col;
+        this.name = getTileNameByPosition(this.row, this.col);
 
         // Set Phaser.Sprite variables
         this.width = this.size;
         this.height = this.size;
+
+        // Debug text
+        if (true) {
+            var style = { font: "30px Arial", fill: "#cccccc", wordWrap: true, wordWrapWidth: 150, align: "center", backgroundColor: "#ffffff" };
+            this.text = game.add.text(0, 0, x + " " + y + "\n" + this.row + " " + this.col, style);
+            this.addChild(this.text);
+        }
 
         // Hexagon Entrances
         // Assume the following is a hexagon
@@ -137,13 +148,13 @@ class HexTile extends Phaser.Sprite {
             {
                 x: (this.width * 3 / 12),
                 y: (this.height / 6),
-                controlPoint: this.controlPoints[4],
+                controlPoint: this.controlPoints[5],
             },
             // 11
             {
                 x: (this.width * 3 / 8),
                 y: 0,
-                controlPoint: this.controlPoints[4],
+                controlPoint: this.controlPoints[5],
             },
         ];
     }
