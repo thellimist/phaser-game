@@ -9,10 +9,34 @@ class HexMap extends Phaser.Group {
 
         this.startTile = {};
         this.directions = [
-           [ {col: +1, row:  0}, {col: +1, row: -1}, {col:  0, row: -1},
-             {col: -1, row: -1}, {col: -1, row:  0}, {col:  0, row: +1} ],
-           [ {col: +1, row: +1}, {col: +1, row:  0}, {col:  0, row: -1},
-             {col: -1, row:  0}, {col: -1, row: +1}, {col:  0, row: +1} ]
+            { // Even
+                11: {row:  -1, col:  0},
+                0:  {row:  -1, col:  0},
+                1:  {row:   0, col: +1},
+                2:  {row:   0, col: +1},
+                3:  {row:  +1, col: +1},
+                4:  {row:  +1, col: +1},
+                5:  {row:  +1, col:  0},
+                6:  {row:  +1, col:  0},
+                7:  {row:  +1, col: -1},
+                8:  {row:  +1, col: -1},
+                9:  {row:   0, col: -1},
+                10: {row:   0, col: -1},
+            },
+            { // Odd
+                11: {row:  -1, col:  0},
+                0:  {row:  -1, col:  0},
+                1:  {row:  -1, col: +1},
+                2:  {row:  -1, col: +1},
+                3:  {row:   0, col: +1},
+                4:  {row:   0, col: +1},
+                5:  {row:  +1, col:  0},
+                6:  {row:  +1, col:  0},
+                7:  {row:   0, col: -1},
+                8:  {row:   0, col: -1},
+                9:  {row:  -1, col: -1},
+                10: {row:  -1, col: -1},
+            }
         ];
     }
 
@@ -57,8 +81,8 @@ class HexMap extends Phaser.Group {
     }
 
     getTileNeighbor(tile, direction) {
-        var parity = tile.data.position.col & 1
-        var dir = directions[parity][direction]
+        var parity = tile.col & 1
+        var dir = this.directions[parity][direction]
 
         return this.getByName(getTileNameByPosition(tile.row + dir.row, tile.col + dir.col));
 

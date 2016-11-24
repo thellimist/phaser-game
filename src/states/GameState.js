@@ -1,4 +1,5 @@
 import HexMap from 'objects/HexMap';
+import HexTile from 'objects/HexTile';
 import Player from 'objects/Player';
 import { getTileNameByPosition } from 'utils/Utils';
 import _ from 'lodash';
@@ -8,14 +9,14 @@ class GameState extends Phaser.State {
     preload() {
         // Load assets
         this.game.stage.backgroundColor = 0x444444;
-        this.game.load.image('hexagon-blank', 'assets/hexagon-blank.png'); // TOOD Change my name
+        this.game.load.image('hexagon-blank', 'assets/hexagon-blank.png'); // TOOD Change name
         this.game.load.image('hexagon-wall', 'assets/hexagon-wall.png');
         this.game.load.image('hexagon-empty', 'assets/hex-tile.png');
         this.game.load.image('hexagon-start', 'assets/hex-start.png');
         this.game.load.image("point", "assets/point.png");
         this.game.load.text('standardMap', 'maps/standard');
 
-        this.game.hexagonSize = 100;
+        this.game.hexagonSize = 150;
     }
 
 	create() {
@@ -41,17 +42,25 @@ class GameState extends Phaser.State {
 
         // Start Playing
         this.player.start();
-        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(3,4)), 7);
-        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,3)), 6);
-        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,3)), 7);
-        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,2)), 0);
-        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,2)), 6);
+        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 11), 7);
+        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 7), 6);
+        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 6), 3);
+        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 3), 9);
+
+
+
+
+        // this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(3,4)), 7);
+        // this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,3)), 6);
+        // this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,3)), 7);
+        // this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,2)), 0);
+        // this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,2)), 6);
         // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-        // var aa = this.game.add.sprite(0, 0, "hexagon-wall");
-        // aa.centerX = this.startTile.world.x;
-        // aa.centerY = this.startTile.world.y;
-
+        // var aa = new HexTile(this.game, 0, 0, "S", {});
+        // aa.centerX = startTile.worldPosition.x;
+        // aa.centerY = startTile.worldPosition.y;
+        // this.hexMap.add(aa);
 	}
 
     // Debug

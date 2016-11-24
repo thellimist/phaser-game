@@ -7,16 +7,12 @@ class Player extends Phaser.Graphics {
         this.currentTile = startTile;
         this.currentPosition = startPosition;
         this.color = "0x008800";
-
-        // Set Phaser.Sprite variables
-        this.game = game;
-        this.width = this.size;
-        this.height = this.size;
     }
 
     moveTile(nextTile, destinationPosition) {
         // Convert currentTile end to nextTile begining
-        var convertedEntrancePosition = (this.currentPosition % 2 == 0) ? ((this.currentPosition + 5) % 12) : ((this.currentPosition- 5) % 12);
+        // Basically if even position + 5 if odd position - 5
+        var convertedEntrancePosition = (this.currentPosition % 2 == 0) ? ((this.currentPosition + 5) % 12) : ((this.currentPosition + 7) % 12);
 
         this.bezierCurveTo(
             nextTile.worldPosition.x + nextTile.entracesPoints[convertedEntrancePosition].controlPoint.x,
