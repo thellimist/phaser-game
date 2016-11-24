@@ -96,8 +96,8 @@ class HexTile extends Phaser.Sprite {
             },
             // 1
             {
-                x: (this.width * 3 / 4) + (this.width / 12),
-                y: (this.height / 6),
+                x: (this.width * 3 / 4) + (this.width / 16),
+                y: (this.height / 8),
                 controlPoint: this.controlPoints[0],
             },
             // 2
@@ -114,7 +114,7 @@ class HexTile extends Phaser.Sprite {
             },
             // 4
             {
-                x: (this.width * 3 / 4) + (this.width / 12),
+                x: (this.width * 3 / 4) + (this.width / 16),
                 y: (this.height * 7 / 8),
                 controlPoint: this.controlPoints[2],
             },
@@ -132,26 +132,26 @@ class HexTile extends Phaser.Sprite {
             },
             // 7
             {
-                x: (this.width * 3 / 12),
+                x: (this.width * 3 / 16),
                 y: (this.height * 7 / 8),
                 controlPoint: this.controlPoints[3],
             },
             // 8
             {
-                x: (this.width * 1 / 12),
+                x: (this.width * 1 / 16),
                 y: (this.height * 5 / 8),
                 controlPoint: this.controlPoints[4],
             },
             // 9
             {
-                x: (this.width * 1 / 12),
+                x: (this.width * 1 / 16),
                 y: (this.height * 3 / 8),
                 controlPoint: this.controlPoints[4],
             },
             // 10
             {
-                x: (this.width * 3 / 12),
-                y: (this.height / 6),
+                x: (this.width * 3 / 16),
+                y: (this.height / 8),
                 controlPoint: this.controlPoints[5],
             },
             // 11
