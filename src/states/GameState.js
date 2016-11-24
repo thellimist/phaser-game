@@ -16,7 +16,8 @@ class GameState extends Phaser.State {
         this.game.load.image("point", "assets/point.png");
         this.game.load.text('standardMap', 'maps/standard');
 
-        this.game.hexagonSize = 150;
+        this.game.hexagonWidth = 400;
+        this.game.hexagonHeight = 346;
     }
 
 	create() {

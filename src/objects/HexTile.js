@@ -23,21 +23,25 @@ class HexTile extends Phaser.Sprite {
             super(game, x, y, 'hexagon-start');
         }
 
+        this.anchor.setTo(0.5);
+
         // Set custom variables
         this.type = type;
-        this.size = game.hexagonSize;
         this.row = position.row;
         this.col = position.col;
         this.name = getTileNameByPosition(this.row, this.col);
 
         // Set Phaser.Sprite variables
-        this.width = this.size;
-        this.height = this.size;
+        this.width = this.game.hexagonWidth;
+        this.height = this.game.hexagonHeight;
+
+        // Road Layouts
+        this.roadLayout = {};
 
         // Debug text
         if (true) {
-            var style = { font: "30px Arial", fill: "#cccccc", wordWrap: true, wordWrapWidth: 150, align: "center", backgroundColor: "#ffffff" };
-            this.text = game.add.text(0, 0, x + " " + y + "\n" + this.row + " " + this.col, style);
+            var style = { font: "50px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 150, align: "center", backgroundColor: "#000000" };
+            this.text = game.add.text(0, 0, this.name, style);
             this.addChild(this.text);
         }
 

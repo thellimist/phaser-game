@@ -52,11 +52,9 @@ class HexMap extends Phaser.Group {
                 var xOffSet = 0;
                 var yOffSet = 0;
 
-                var hexagonSize = this.game.hexagonSize;
-
                 var parity = j & 1
-                var xCoord = j * (hexagonSize * 3 / 4) + xOffSet;
-                var yCoord = i * hexagonSize - (parity  * hexagonSize / 2) + yOffSet;
+                var xCoord = j * (this.game.hexagonWidth * 3 / 4) + xOffSet;
+                var yCoord = i * this.game.hexagonHeight - (parity  * this.game.hexagonHeight / 2) + yOffSet;
 
                 var tile = new HexTile(this.game, xCoord, yCoord, tileType, {row: i, col: j});
 
