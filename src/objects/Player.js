@@ -12,41 +12,33 @@ class Player extends Phaser.Graphics {
         this.game = game;
         this.width = this.size;
         this.height = this.size;
+    }
 
-        // bezierGraphics = this.game.add.graphics(0, 0);
+    moveTile(nextTile, destinationPosition) {
+        // Convert currentTile end to nextTile begining
+        var convertedEntrancePosition = (this.currentPosition % 2 == 0) ? ((this.currentPosition + 5) % 12) : ((this.currentPosition- 5) % 12);
 
+        this.bezierCurveTo(
+            nextTile.worldPosition.x + nextTile.entracesPoints[convertedEntrancePosition].controlPoint.x,
+            nextTile.worldPosition.y + nextTile.entracesPoints[convertedEntrancePosition].controlPoint.y,
+            nextTile.worldPosition.x + nextTile.entracesPoints[destinationPosition].controlPoint.x,
+            nextTile.worldPosition.y + nextTile.entracesPoints[destinationPosition].controlPoint.y,
+            nextTile.worldPosition.x + nextTile.entracesPoints[destinationPosition].x,
+            nextTile.worldPosition.y + nextTile.entracesPoints[destinationPosition].y);
+
+        this.currentTile = nextTile;
+        this.currentPosition = destinationPosition;
+    }
+
+    start() {
         this.clear();
         this.lineStyle(5, this.color, 1);
 
-
-        // this.moveTo(this.currentTile.worldPosition.x + this.currentTile.entracesPoints[0].x,
-        //             this.currentTile.worldPosition.y + this.currentTile.entracesPoints[0].y);
-
-        // this.bezierCurveTo(
-        //     this.currentTile.worldPosition.x + this.currentTile.entracesPoints[0].controlPoint.x,
-        //     this.currentTile.worldPosition.y + this.currentTile.entracesPoints[0].controlPoint.y,
-        //     this.currentTile.worldPosition.x + this.currentTile.entracesPoints[6].controlPoint.x,
-        //     this.currentTile.worldPosition.y + this.currentTile.entracesPoints[6].controlPoint.y,
-        //     this.currentTile.worldPosition.x + this.currentTile.entracesPoints[6].x,
-        //     this.currentTile.worldPosition.y + this.currentTile.entracesPoints[6].y);
-    }
-
-    moveTile(nextTile, entrancePosition) {
-        this.moveTo(this.currentTile.worldPosition.x + this.currentTile.entracesPoints[this.currentPosition].x,
+        this.moveTo(this.currentTile.worldPosition.x + this.currentTile.entracesPoints[this.currentPosition].controlPoint.x,
+                    this.currentTile.worldPosition.y + this.currentTile.entracesPoints[this.currentPosition].controlPoint.y);
+        this.lineTo(this.currentTile.worldPosition.x + this.currentTile.entracesPoints[this.currentPosition].x,
                     this.currentTile.worldPosition.y + this.currentTile.entracesPoints[this.currentPosition].y);
-        this.bezierCurveTo(
-            this.currentTile.worldPosition.x + this.currentTile.entracesPoints[this.currentPosition].controlPoint.x,
-            this.currentTile.worldPosition.y + this.currentTile.entracesPoints[this.currentPosition].controlPoint.y,
-            nextTile.worldPosition.x + nextTile.entracesPoints[entrancePosition].controlPoint.x,
-            nextTile.worldPosition.y + nextTile.entracesPoints[entrancePosition].controlPoint.y,
-            nextTile.worldPosition.x + nextTile.entracesPoints[entrancePosition].x,
-            nextTile.worldPosition.y + nextTile.entracesPoints[entrancePosition].y);
 
-        this.alphe = 1;
-        var tween = this.game.add.tween(this).to( { alpha: 0 }, 2000, "Linear", true, 200);
-
-        this.currentTile = nextTile;
-        this.currentPosition = entrancePosition;
     }
 }
 
