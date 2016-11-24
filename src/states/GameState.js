@@ -1,4 +1,3 @@
-import RainbowText from 'objects/RainbowText';
 import HexTile from 'objects/HexTile';
 import Player from 'objects/Player';
 import _ from 'lodash';
