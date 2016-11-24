@@ -1,5 +1,6 @@
 import HexMap from 'objects/HexMap';
 import HexTile from 'objects/HexTile';
+import Line from 'objects/Line';
 import Player from 'objects/Player';
 import { getTileNameByPosition } from 'utils/Utils';
 import _ from 'lodash';
@@ -37,16 +38,17 @@ class GameState extends Phaser.State {
         this.hexMap.centerY = this.game.world.centerY;
 
         // Create player
-        var startTile = this.hexMap.getStartTile();
-        this.player = new Player(this.game, startTile, 11);
-        this.mapGroup.add(this.player);
+        // var startTile = this.hexMap.getStartTile();
+        // this.player = new Player(this.game, startTile, 11);
+        // this.mapGroup.add(this.player);
 
         // Start Playing
-        this.player.start();
-        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 11), 7);
-        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 7), 6);
-        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 6), 3);
-        this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 3), 9);
+        // this.player.start();
+        // this.player.moveDirection(11);
+        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 11), 7);
+        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 7), 6);
+        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 6), 3);
+        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 3), 9);
 
 
 

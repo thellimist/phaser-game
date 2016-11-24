@@ -163,6 +163,11 @@ class HexTile extends Phaser.Sprite {
         ];
     }
 
+    addRoad(start, end) {
+        this.roadLayout[start] = end;
+        this.roadLayout[end] = start;
+    }
+
 
 }
 
