@@ -1,5 +1,6 @@
-import HexTile from 'objects/HexTile';
+import HexMap from 'objects/HexMap';
 import Player from 'objects/Player';
+import { getTileNameByPosition } from 'utils/Utils';
 import _ from 'lodash';
 
 class GameState extends Phaser.State {
@@ -7,92 +8,59 @@ class GameState extends Phaser.State {
     preload() {
         // Load assets
         this.game.stage.backgroundColor = 0x444444;
-        // this.game.load.image("tiles", "assets/sprites/tiles.png");
-        // this.game.load.spritesheet("arrows", "assets/sprites/arrows.png", 420, 420);
-
-        this.game.load.image('hexagon-empty', 'assets/hexagon-empty.png');
-        this.game.load.image('hexagon-blank', 'assets/hexagon-blank.png');
+        this.game.load.image('hexagon-blank', 'assets/hexagon-blank.png'); // TOOD Change my name
         this.game.load.image('hexagon-wall', 'assets/hexagon-wall.png');
-        this.game.load.image('hexagon-start', 'assets/hexagon-start.png');
-
+        this.game.load.image('hexagon-empty', 'assets/hex-tile.png');
+        this.game.load.image('hexagon-start', 'assets/hex-start.png');
         this.game.load.image("point", "assets/point.png");
-
         this.game.load.text('standardMap', 'maps/standard');
 
-        // var hexagongame.world.width / game.hexagonScale;
         this.game.hexagonSize = 100;
     }
 
 	create() {
         // Create Objects
-		// let text = new RainbowText(this.game, center.x, center.y, "- phaser -\nwith a sprinkle of\nES6 dust!");
-		// text.anchor.set(0.5);
-
-
-
         // Add map
-        var map = this.game.cache.getText('standardMap');
-        this.hexagonTileGroup = this.createMap(this.game, map);
-        this.hexagonTileGroup.centerX = this.game.world.centerX
-        this.hexagonTileGroup.centerY = this.game.world.centerY
-        this.game.stage.addChild(this.hexagonTileGroup);
 
-        // Find start tile
-        this.startTile = {};
-        this.hexagonTileGroup.forEach(function(item) {
-            if (item.type === "S") {
-                this.startTile = item;
-            }
-        }.bind(this));
+        this.mapGroup = new Phaser.Group(this.game, this.world);
 
-        this.player = new Player(this.game, this.startTile, 10);
-        this.game.stage.addChild(this.player);
+        // Create Hexagon Map
+        var mapFile = this.game.cache.getText('standardMap');
+        this.hexMap = new HexMap(this.game, this.world);
+        this.hexMap.createMap(mapFile);
+        this.mapGroup.add(this.hexMap);
 
-        console.log(this.hexagonTileGroup.children[15]);
+        // Move Map to middle
+        this.hexMap.centerX = this.game.world.centerX;
+        this.hexMap.centerY = this.game.world.centerY;
 
-        this.player.moveTile(this.hexagonTileGroup.children[39], 11);
-        // this.player.moveTile(this.hexagonTileGroup.children[21], 1);
-        // this.player.moveTile(this.hexagonTileGroup.children[22], 2);
-        // this.player.moveTile(this.hexagonTileGroup.children[23], 3);
-        // this.player.moveTile(this.hexagonTileGroup.children[24], 4);
-        // this.player.moveTile(this.hexagonTileGroup.children[25], 5);
-        // this.player.moveTile(this.hexagonTileGroup.children[26], 6);
-        // this.player.moveTile(this.hexagonTileGroup.children[30], 7);
-        // this.player.moveTile(this.hexagonTileGroup.children[31], 8);
-        // this.player.moveTile(this.hexagonTileGroup.children[32], 9);
-        // this.player.moveTile(this.hexagonTileGroup.children[33], 10);
-        // this.player.moveTile(this.hexagonTileGroup.children[34], 11);
+        // Create player
+        var startTile = this.hexMap.getStartTile();
+        this.player = new Player(this.game, startTile, 11);
+        this.mapGroup.add(this.player);
+
+        // Start Playing
+        this.player.start();
+        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(3,4)), 7);
+        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,3)), 6);
+        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,3)), 7);
+        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(5,2)), 0);
+        this.player.moveTile(this.hexMap.getByName(getTileNameByPosition(4,2)), 6);
         // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+        // var aa = this.game.add.sprite(0, 0, "hexagon-wall");
+        // aa.centerX = this.startTile.world.x;
+        // aa.centerY = this.startTile.world.y;
+
 	}
 
-    createMap(game, map) {
-        var splitedMap = map.split("\n");
+    // Debug
+    printOutline(object) {
+        var graphics = this.game.add.graphics(0, 0);
 
-        var hexagonTileGroup = game.add.group();
-
-        for (var i = 0; i < splitedMap.length; i++) {
-            for (var j = 0; j < splitedMap[i].length; j++) {
-                // console.log("row " + i + " col " + j + "res " + splitedMap[i][j] );
-
-                var tileType = splitedMap[i][j];
-                let center = { x: game.world.centerX, y: game.world.centerY }
-
-                var xOffSet = 0;
-                var yOffSet = 0;
-
-                var hexagonSize = game.hexagonSize;
-
-                var parity = j & 1
-                var xCoord = j * (hexagonSize * 3 / 4) + xOffSet;
-                var yCoord = i * hexagonSize - (parity  * hexagonSize / 2) + yOffSet;
-
-                var tile = new HexTile(game, xCoord, yCoord, tileType, {row: i, col: j});
-
-                hexagonTileGroup.add(tile);
-            }
-        }
-
-        return hexagonTileGroup;
+        // draw a rectangle
+        graphics.lineStyle(2, 0x0000FF, 1);
+        graphics.drawRect(object.worldPosition.x, object.worldPosition.y, object.width, object.height);
     }
 
     update() {
