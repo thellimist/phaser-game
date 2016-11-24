@@ -26,16 +26,25 @@ class GameState extends Phaser.State {
         // Add map
 
         this.mapGroup = new Phaser.Group(this.game, this.world);
+        this.mapGroup.pivot.x = this.game.world.centerX;
+        this.mapGroup.pivot.y = this.game.world.centerY;
 
         // Create Hexagon Map
         var mapFile = this.game.cache.getText('standardMap');
         this.hexMap = new HexMap(this.game, this.world);
+        this.hexMap.pivot.x = this.game.world.centerX;
+        this.hexMap.pivot.y = this.game.world.centerY;
+
         this.hexMap.createMap(mapFile);
         this.mapGroup.add(this.hexMap);
 
+        this.hexMap.scale.set(0.2);
+
         // Move Map to middle
-        this.hexMap.centerX = this.game.world.centerX;
-        this.hexMap.centerY = this.game.world.centerY;
+        this.mapGroup.centerX = this.game.world.centerX;
+        this.mapGroup.centerY = this.game.world.centerY;
+
+        this.addRandomRoadsToTile(1,4);
 
         // Create player
         // var startTile = this.hexMap.getStartTile();
@@ -64,7 +73,20 @@ class GameState extends Phaser.State {
         // aa.centerX = startTile.worldPosition.x;
         // aa.centerY = startTile.worldPosition.y;
         // this.hexMap.add(aa);
+
+        // game.input.addMoveCallback(slideGem, this);
+
+
+
+
+
 	}
+
+
+    rotate() {
+        console.log("HERE");
+        this.param.game.add.tween(this.param).to( { angle: this.param.angle + 60 }, 200, Phaser.Easing.Linear.None, true);
+    }
 
     // Debug
     printOutline(object) {
@@ -83,6 +105,36 @@ class GameState extends Phaser.State {
 
     }
 
+    addRandomRoadsToTile(row, col) {
+        var tile = this.hexMap.getByName(getTileNameByPosition(row,col));
+
+        // var tile = new HexTile(this.game, 0, 0, "E", {row: row, col: col});
+
+        var lineGroup = new Phaser.Group(this.game, this.world);
+        lineGroup.pivot.x = 0.5;
+        lineGroup.pivot.y = 0.5;
+
+        var possibleDirections = [0,1,2,3,4,5,6,7,8,9,10,11];
+        while (possibleDirections.length !== 0) {
+            var start = _.sample(possibleDirections);
+            possibleDirections = _.pull(possibleDirections, start);
+            var end = _.sample(possibleDirections);
+            possibleDirections = _.pull(possibleDirections, end);
+
+            tile.addRoad(start, end);
+
+            var line = new Line(this.game, tile, start);
+            line.moveDirection(end);
+            lineGroup.add(line);
+        }
+
+        tile.addChild(lineGroup);
+        lineGroup.alignIn(tile, Phaser.CENTER, -tile.x, -tile.y);
+
+        this.game.input.onDown.add(this.rotate, {param: tile});
+
+
+    }
 }
 
 export default GameState;
