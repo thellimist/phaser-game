@@ -35,32 +35,45 @@ class GameState extends Phaser.State {
         this.hexMap.pivot.x = this.game.world.centerX;
         this.hexMap.pivot.y = this.game.world.centerY;
 
+
         this.hexMap.createMap(mapFile);
         this.mapGroup.add(this.hexMap);
-
-        this.hexMap.scale.set(0.2);
+        this.mapGroup.scale.set(0.2);
 
         // Move Map to middle
         this.mapGroup.centerX = this.game.world.centerX;
         this.mapGroup.centerY = this.game.world.centerY;
 
-        // Create selected tile
+        // Create active tile
         this.activeTile = {};
 
-        this.addRandomRoadsToTile(1,4);
+        this.addActiveTile(3,4);
 
         // Create player
-        // var startTile = this.hexMap.getStartTile();
-        // this.player = new Player(this.game, startTile, 11);
-        // this.mapGroup.add(this.player);
+        var startTile = this.hexMap.getStartTile();
+        this.player = new Player(this.game, startTile, 11);
+
+        this.mapGroup.addChild(this.player);
+        // I don't know why there is an offset.
+        this.player.alignTo(startTile, Phaser.TOP_LEFT, 600, 400);
 
         // Start Playing
-        // this.player.start();
+        this.player.start();
+
         // this.player.moveDirection(11);
-        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 11), 7);
-        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 7), 6);
-        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 6), 3);
-        // this.player.moveTile(this.hexMap.getTileNeighbor(this.player.currentTile, 3), 9);
+        // this.player.currentTile = this.hexMap.getTileNeighbor(this.player.currentTile, 11);
+
+        // console.log(this.player.currentTile.name);
+
+        // this.player.moveDirection(3);
+        // this.player.currentTile = this.hexMap.getTileNeighbor(this.player.currentTile, 3);
+        // this.player.moveDirection(5);
+        // this.player.currentTile = this.hexMap.getTileNeighbor(this.player.currentTile, 5);
+        console.log("HERE!");
+        this.player.moveToTile(this.hexMap.getTileNeighbor(this.player.currentTile, 11), 7);
+        this.player.moveToTile(this.hexMap.getTileNeighbor(this.player.currentTile, 7), 6);
+        this.player.moveToTile(this.hexMap.getTileNeighbor(this.player.currentTile, 6), 3);
+        // this.player.moveToTile(this.hexMap.getTileNeighbor(this.player.currentTile, 3), 9);
 
 
 
@@ -75,7 +88,7 @@ class GameState extends Phaser.State {
         // var aa = new HexTile(this.game, 0, 0, "S", {});
         // aa.centerX = startTile.worldPosition.x;
         // aa.centerY = startTile.worldPosition.y;
-        // this.hexMap.add(aa);
+        // this.mapGroup.add(aa);
 
         // game.input.addMoveCallback(slideGem, this);
 
@@ -102,7 +115,7 @@ class GameState extends Phaser.State {
 
     }
 
-    addRandomRoadsToTile(row, col) {
+    addActiveTile(row, col) {
         var tile = this.hexMap.getByName(getTileNameByPosition(row,col));
 
         // var tile = new HexTile(this.game, 0, 0, "E", {row: row, col: col});

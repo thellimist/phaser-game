@@ -13,6 +13,11 @@ class Line extends Phaser.Graphics {
     }
 
     moveDirection(destinationPosition) {
+        // console.log("HERE!");
+        // console.log(this.currentTile);
+        console.log("CURR " + this.currentPosition);
+        console.log("DEST " + destinationPosition);
+
         this.moveTo(this.currentTile.entracesPoints[this.currentPosition].x,
                     this.currentTile.entracesPoints[this.currentPosition].y);
 
@@ -24,29 +29,16 @@ class Line extends Phaser.Graphics {
             this.currentTile.entracesPoints[destinationPosition].x,
             this.currentTile.entracesPoints[destinationPosition].y);
 
-        // console.log("CUR " + this.currentPosition + " _ DES" + destinationPosition);
-        // console.log(this.currentTile.entracesPoints[this.currentPosition]);
-        // console.log(this.currentTile.entracesPoints[destinationPosition]);
-
-        // this.lineTo(this.currentTile.entracesPoints[destinationPosition].x,
-        //             this.currentTile.entracesPoints[destinationPosition].y);
-
-
-        // this.moveTo(this.startTile.worldPosition.x + this.startTile.entracesPoints[this.currentPosition].x,
-        //             this.startTile.worldPosition.y + this.startTile.entracesPoints[this.currentPosition].y);
-
-        // this.bezierCurveTo(
-        //     this.startTile.worldPosition.x + this.startTile.entracesPoints[this.currentPosition].controlPoint.x,
-        //     this.startTile.worldPosition.y + this.startTile.entracesPoints[this.currentPosition].controlPoint.y,
-        //     this.startTile.worldPosition.x + this.startTile.entracesPoints[destinationPosition].controlPoint.x,
-        //     this.startTile.worldPosition.y + this.startTile.entracesPoints[destinationPosition].controlPoint.y,
-        //     this.startTile.worldPosition.x + this.startTile.entracesPoints[destinationPosition].x,
-        //     this.startTile.worldPosition.y + this.startTile.entracesPoints[destinationPosition].y);
-
-        // this.currentTile = nextTile;
-
         // Need to convert destinationPoisition to entrance position for the next round.
-        this.currentPosition = (destinationPosition + 5) % 12;
+        if (this.currentTile.col % 2) {
+            this.currentPosition = (destinationPosition + 5) % 12;
+        } else {
+            this.currentPosition = (destinationPosition + 7) % 12;
+        }
+
+
+
+        console.log("AFTER CUR " + this.currentPosition);
     }
 }
 
