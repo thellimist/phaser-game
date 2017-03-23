@@ -1,3 +1,7 @@
+# NOTE
+
+This game is incomplete
+
 ## Boilerplate Owner
 
 https://github.com/belohlavek/phaser-es6-boilerplate
